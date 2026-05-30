@@ -1,0 +1,16 @@
+{
+  "pollingIntervalMinutes": 15,
+  "pincode": "522237",
+  "detection": {
+    "windowSize": 8,
+    "thresholdPercent": 5.0,
+    "cooldownMinutes": 120
+  },
+  "telegram": {
+    "botTokenEnv": "TELEGRAM_BOT_TOKEN",
+    "chatIdEnv": "TELEGRAM_CHAT_ID"
+  },
+  "database": {
+    "path": "db/prices.db"
+  }
+}
