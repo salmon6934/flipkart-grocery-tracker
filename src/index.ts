@@ -134,6 +134,15 @@ async function main(): Promise<void> {
     console.log(`🌐 Health server listening on port ${PORT}`);
   });
 
+  // Self-ping every 13 minutes to prevent Render from spinning down
+  const RENDER_URL = process.env.RENDER_EXTERNAL_URL;
+  if (RENDER_URL) {
+    setInterval(() => {
+      fetch(RENDER_URL).catch(() => {});
+    }, 13 * 60 * 1000);
+    console.log(`🏓 Self-ping enabled: ${RENDER_URL}`);
+  }
+
   // Graceful shutdown
   const shutdown = async () => {
     console.log("\n🛑 Shutting down...");
