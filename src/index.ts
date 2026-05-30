@@ -120,7 +120,7 @@ async function main(): Promise<void> {
 
   // Start a simple HTTP server to keep Render happy
   const PORT = process.env.PORT || 3000;
-  const server = http.createServer((req, res) => {
+  const server = http.createServer((_req, res) => {
     const products = store.getAllProducts();
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify({
