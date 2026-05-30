@@ -1,0 +1,9 @@
+node_modules
+dist
+db/*.db
+.env
+.git
+tests
+*.test.ts
+test-*.ts
+PROGRESS.md

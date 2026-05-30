@@ -6,6 +6,7 @@
  */
 
 import "dotenv/config";
+import http from "http";
 import { Config } from "./types";
 import { PriceStore } from "./store";
 import { APIFetcher, IFetcher } from "./fetcher";
@@ -117,11 +118,28 @@ async function main(): Promise<void> {
   console.log(`💬 Send a Flipkart link to the bot to start tracking.`);
   console.log(`   Press Ctrl+C to stop.\n`);
 
+  // Start a simple HTTP server to keep Render happy
+  const PORT = process.env.PORT || 3000;
+  const server = http.createServer((req, res) => {
+    const products = store.getAllProducts();
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({
+      status: "running",
+      uptime: process.uptime(),
+      tracking: products.length,
+    }));
+  });
+
+  server.listen(PORT, () => {
+    console.log(`🌐 Health server listening on port ${PORT}`);
+  });
+
   // Graceful shutdown
   const shutdown = async () => {
     console.log("\n🛑 Shutting down...");
     clearInterval(timer);
     bot.stopListening();
+    server.close();
     await fetcher.close();
     store.close();
     process.exit(0);
